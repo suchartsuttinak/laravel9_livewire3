@@ -4,17 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-</head>
-<body>
-    <h1>About page</h1>
-    <h3>{{ $company2 }}</h3>
-    <ul>
-        @foreach ($user as $user )
-        <li>{{ $user }}</li>
 
-        @endforeach
+
+        {{--  <link rel="stylesheet" href="{{ asset('resources/css/app.css') }}">
+        <script src="{{ asset('resources/js/app.js') }}" defer></script>  --}}
+    <title>Document</title>
+
+<body>
+
+
+
+
+
     </ul>
     <a href="{{ route('welcome') }}">กลับหน้าหลัก</a>
+    @livewireScripts
 </body>
 </html>
