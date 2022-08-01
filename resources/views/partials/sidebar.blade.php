@@ -101,8 +101,8 @@
                     <ion-icon name="home"></ion-icon>
                    หน้าแรก
                 </a>
-                <li class="{{ request()->routeIs('welcome') ? 'active' : ''}}">
-                    <a href="{{ route('welcome') }}">
+                <li class="{{ request()->routeIs('user.index') ? 'active' : ''}}">
+                    <a href="{{ route('user.index') }}">
                         <ion-icon name="person"></ion-icon>
                         ข้อมูลผู้ใช้งาน
                     </a>

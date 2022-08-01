@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\SiteController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,6 +15,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+
 Route::get('/', [SiteController::class, 'index'])->name('welcome');
 
 Route::get('/about', [SiteController::class, 'about'])->name('about');
@@ -26,4 +28,12 @@ Route::middleware([
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
+
+    Route::get('/user' , [UserController::class, 'index'])->name('user.index');
 });
+
+
+
+
+
+
