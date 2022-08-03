@@ -1,9 +1,26 @@
 <div>
 
+    <div>
+        @if (session()->has('message'))
+            <div x-data="{ isShow:true }" x-show="isShow" x-init="setTimeout( () => isShow = false, 1500)"
+            class="inline-flex items-center w-full px-6 py-5 mb-3 text-base text-yellow-700 bg-yellow-100 rounded-lg alert alert-dismissible fade show" role="alert">
+                <strong class="mr-1">{{ session('message') }} </strong>
+                <button type="button" class="box-content w-4 h-4 p-1 ml-auto text-yellow-900 border-none rounded-none opacity-50 btn-close focus:shadow-none focus:outline-none focus:opacity-100 hover:text-yellow-900 hover:opacity-75 hover:no-underline" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>
+        @endif
+    </div>
     <button type="button" class="inline-block px-6 py-2.5 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out" data-bs-toggle="modal" data-bs-target="#exampleModalCenteredScrollable">
         เพิ่มข้อมูล
-      </button>
+    </button>
 
+    <button wire:click='exportExcel'
+      type="button" class="inline-block px-6 py-2.5 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out">
+      Eport Excel
+    </button>
+    <button wire:click='importExcel'
+      type="button" class="inline-block px-6 py-2.5 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out">
+      Import Excel
+    </button>
 
     {{--  Create User Modal  --}}
     <div wire:ignore.self class="fixed top-0 left-0 hidden w-full h-full overflow-x-hidden overflow-y-auto outline-none modal fade" id="exampleModalCenteredScrollable" tabindex="-1" aria-labelledby="exampleModalCenteredScrollable" aria-modal="true" role="dialog">
@@ -43,6 +60,7 @@
                         m-0
                         focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" id="exampleInput123"
                         aria-describedby="emailHelp123" placeholder="Full name">
+                        @error('name') <p class="mt-1 text-red-500">{{ $message }}</p> @enderror
                   </div>
                   <div class="mb-6 form-group">
                     <input
@@ -62,6 +80,7 @@
                       m-0
                       focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" id="exampleInput125"
                       placeholder="Email address">
+                      @error('email') <p class="mt-1 text-red-500">{{ $message }}</p> @enderror
                   </div>
                   <div class="mb-6 form-group">
                     <input
@@ -81,6 +100,7 @@
                       m-0
                       focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" id="exampleInput126"
                       placeholder="Password">
+                      @error('password') <p class="mt-1 text-red-500">{{ $message }}</p> @enderror
                   </div>
 
                   <button type="submit" class="
