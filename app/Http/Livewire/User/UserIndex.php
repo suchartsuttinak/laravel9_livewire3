@@ -16,7 +16,8 @@ class UserIndex extends Component
     public $name;
     public $email;
     public $password;
-
+    public $deleteId;
+    public $updateId;
     public User $user;
 
     public function mount(User $user){
@@ -80,21 +81,73 @@ class UserIndex extends Component
     }
 }
 
-//Export & Import Excel
+
     public function resetForm(){
         $this->name = '';
         $this->email = '';
         $this->password = '';
     }
 
+    //Export & Import Excel
     public function exportExcel() {
         $users = User::all();
-        // Export all users
-        (new FastExcel($users))->export( uniqid().'.xlsx');
-        session()->flash('message', 'ส่งออกสำเร็จ');
+        // (new FastExcel($users))->export( uniqid().'.xlsx');
+        return response()->streamDownload(function() use($users){
+             return (new FastExcel($users))->export('php://output', function($user) {
+            return [
+                'name' => $user->name,
+                'email' => $user->email,
+                'Creatd At' => $user->created_at->format('y-m-d H:i:s')
+
+            ];
+             });
+        },
+        sprintf('user-%s-%s.xlsx', date('y-m-d'), uniqid())
+    );
+
+    }
+//Export Excel
+// -------------------------------------------------------------------------------------------
+
+//Export & Import Excel
+
+public function importExcel() {
+    try {
+        (new FastExcel)->import('users-import.xlsx', function ($line) {
+            return User::create([
+                'name' => $line['name'],
+                'email' => $line['email'],
+                'password' => Hash::make($line['password'])
+            ]);
+        });
+        session()->flash('message', 'นำเข้าข้อมูลผู้ใช้สำเร็จ');
+    } catch (\Throwable $th) {
+        //throw $th;
+        session()->flash('message', 'เกิดข้อผิดพลาดในการ import');
+    }
+}
+    public function confirmDelete($id){
+        $this->deleteId = $id;
+    }
+    public function delete(){
+        User::find($this->deleteId)->delete();
+        session()->flash('message', 'ลบข้อมูลเรียบร้อย');
     }
 
-    public function importExcel() {
-
+    public function confirmEdit($id){
+        $this->updateId = $id;
+        $this->resetForm();
+        $user = User::find($id);
+        $this->name = $user->name;
+        $this->email = $user->email;
     }
+    public function update(){
+        User::find($this->updateId)->update([
+            'name' => $this->name,
+            'email' => $this->email,
+        ]);
+        $this->resetForm();
+        session()->flash('message', 'แก้ไขข้อมูลเรียบร้อย');
+    }
+
 }
